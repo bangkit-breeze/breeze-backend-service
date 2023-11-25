@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model EmissionLog {
+  id                 BigInt               @id(map: "emission_logs_pkey") @default(autoincrement())
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
+  name               String?
+  total_emission     BigInt?
+  category           String?
+  user_id            String?              @db.Uuid
+  reward_exp         BigInt?
+  User               User?                @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  TrackerCallbackLog TrackerCallbackLog[]
+}
+
+model Event {
+  id                BigInt              @id(map: "events_pkey") @default(autoincrement())
+  created_at        DateTime            @default(now()) @db.Timestamptz(6)
+  event_image_url   String?
+  name              String?
+  start_at          DateTime?           @db.Timestamptz(6)
+  end_at            DateTime?           @db.Timestamptz(6)
+  reward_points     BigInt?
+  location          String?
+  status            String?
+  description       String?
+  creator_id        String?             @db.Uuid
+  highlighted       Boolean?            @default(false)
+  User              User?               @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  UserParticipation UserParticipation[]
+}
+
+model TrackerCallbackLog {
+  id              BigInt       @id(map: "tracker_callback_logs_pkey") @default(autoincrement())
+  created_at      DateTime     @default(now()) @db.Timestamptz(6)
+  response_body   Json?
+  emission_log_id BigInt?
+  EmissionLog     EmissionLog? @relation(fields: [emission_log_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model User {
+  id                     String              @id(map: "profiles_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at             DateTime            @default(now()) @db.Timestamptz(6)
+  full_name              String
+  email                  String
+  avatar_url             String?
+  role                   String?
+  points                 BigInt?             @default(0)
+  experiences            BigInt?             @default(0)
+  vehicle_emission_count BigInt?             @default(0)
+  food_emission_count    BigInt?             @default(0)
+  food_footprint_sum     BigInt?             @default(0)
+  vehicle_footprint_sum  BigInt?             @default(0)
+  total_co2_removed      BigInt?             @default(0)
+  password               String
+  EmissionLog            EmissionLog[]
+  Event                  Event[]
+  UserParticipation      UserParticipation[]
+}
+
+model UserParticipation {
+  id              BigInt   @id(map: "user_participations_pkey") @default(autoincrement())
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+  participant_id  String?  @db.Uuid
+  stauts          String?
+  description     String?
+  proof_image_url String?
+  event_id        BigInt?
+  Event           Event?   @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User            User?    @relation(fields: [participant_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
