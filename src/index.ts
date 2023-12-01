@@ -1,4 +1,5 @@
 import express from 'express';
+import morgan from 'morgan';
 import 'dotenv/config';
 import userController from './controllers/userController';
 
@@ -11,7 +12,14 @@ const app = express();
 
 const PORT = process.env.PORT;
 
+morgan.token('body', (req) => JSON.stringify(req.body));
+
 app.use(express.json());
+app.use(
+	morgan(
+		'[:date[web]] :method :url :status :res[content-length] - :response-time ms :body'
+	)
+);
 
 app.use('/api/v1/user', userController);
 
