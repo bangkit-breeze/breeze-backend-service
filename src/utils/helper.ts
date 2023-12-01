@@ -1,6 +1,6 @@
 export const createSuccessResponse = (body: object, message: string) => {
 	return {
-		status: 'success',
+		success: true,
 		data: body,
 		message,
 	};
@@ -8,7 +8,7 @@ export const createSuccessResponse = (body: object, message: string) => {
 
 export const createErrorResponse = (message: string) => {
 	return {
-		status: 'error',
+		success: false,
 		data: null,
 		message,
 	};
