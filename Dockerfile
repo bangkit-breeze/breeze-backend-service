@@ -13,12 +13,14 @@ ENV SECRET=$SECRET
 ENV SALT_ROUNDS=$SALT_ROUNDS
 
 COPY package.json yarn.lock* ./
+COPY prisma ./prisma/
 
 RUN yarn install
 
 COPY . .
 
 RUN yarn build
+RUN npx prisma generate
 
 EXPOSE $PORT
 
