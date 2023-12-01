@@ -1,6 +1,6 @@
-import { compare, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { createUser, findByEmail } from '../repositories/userRepository';
+import { compare, hash } from 'bcrypt';
 
 const register = async (fullName: string, email: string, password: string) => {
 	const isExistUser = await findByEmail(email);
@@ -10,7 +10,7 @@ const register = async (fullName: string, email: string, password: string) => {
 	}
 
 	const saltRounds = process.env.SALT_ROUNDS;
-	const passwordHash = await hash(password, saltRounds);
+	const passwordHash = await hash(password, Number(saltRounds));
 	const user = await createUser(fullName, email, passwordHash);
 
 	return user;
