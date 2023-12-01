@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc",
+    "build": "tsc",
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts .",
-    "start": "node build/index.js",
+    "start:prod": "node build/index.js",
+    "start:migrate:prod": "prisma migrate deploy && yarn run start:prod",
     "prepare": "husky install"
   },
   "lint-staged": {

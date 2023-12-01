@@ -20,6 +20,6 @@ app.get('/api/v1/ping', (_req, res) => {
 	res.send('pong');
 });
 
-app.listen(PORT, () => {
+app.listen(PORT || 3000, () => {
 	console.log(`Server running on port ${PORT}`);
 });
