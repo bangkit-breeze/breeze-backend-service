@@ -20,3 +20,15 @@ export const registerSchema = z.object({
 			path: ['confirmPassword'],
 		}),
 });
+
+export const articleSchema = z.object({
+	title: z.string(),
+	content: z.string(),
+	imageUrl: z.string(),
+	contentUrl: z.string(),
+});
+
+export const listArticleSchema = z.array(articleSchema);
+
+export type ArticleSchema = z.infer<typeof articleSchema>;
+export type ListArticleSchema = z.infer<typeof listArticleSchema>;

@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import 'dotenv/config';
 import authController from './controllers/authController';
 import userController from './controllers/userController';
+import articleController from './controllers/articleController';
 import { authGuard } from './middlewares/auth';
 
 // @ts-expect-error: Unreachable code error
@@ -22,6 +23,7 @@ app.use(morgan('[:date[web]] :method :url :status - :response-time ms :body'));
 app.use('/api/v1', authController);
 app.use(authGuard);
 app.use('/api/v1/users', userController);
+app.use('/api/v1/articles', articleController);
 
 app.get('/api/v1/ping', (_req, res) => {
 	console.log('someone pinged here');
