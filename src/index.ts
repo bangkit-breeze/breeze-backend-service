@@ -5,6 +5,7 @@ import authController from './controllers/authController';
 import userController from './controllers/userController';
 import articleController from './controllers/articleController';
 import { authGuard } from './middlewares/auth';
+import eventController from './controllers/eventController';
 
 // @ts-expect-error: Unreachable code error
 BigInt.prototype.toJSON = function () {
@@ -24,6 +25,7 @@ app.use('/api/v1', authController);
 app.use(authGuard);
 app.use('/api/v1/users', userController);
 app.use('/api/v1/articles', articleController);
+app.use('/api/v1/events', eventController);
 
 app.get('/api/v1/ping', (_req, res) => {
 	console.log('someone pinged here');
