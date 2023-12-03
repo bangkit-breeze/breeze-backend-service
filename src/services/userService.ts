@@ -8,7 +8,7 @@ const profile = async (id: string) => {
 	}
 
 	const { password: _password, ...userProfile } = user;
-
+	
 	return userProfile;
 };
 
