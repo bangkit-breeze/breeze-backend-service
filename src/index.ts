@@ -4,6 +4,7 @@ import 'dotenv/config';
 import authController from './controllers/authController';
 import userController from './controllers/userController';
 import { authGuard } from './middlewares/auth';
+import eventController from './controllers/eventController';
 
 // @ts-expect-error: Unreachable code error
 BigInt.prototype.toJSON = function () {
@@ -22,6 +23,7 @@ app.use(morgan('[:date[web]] :method :url :status - :response-time ms :body'));
 app.use('/api/v1', authController);
 app.use(authGuard);
 app.use('/api/v1/users', userController);
+app.use('/api/v1/events', eventController);
 
 app.get('/api/v1/ping', (_req, res) => {
 	console.log('someone pinged here');

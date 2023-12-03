@@ -20,3 +20,23 @@ export const registerSchema = z.object({
 			path: ['confirmPassword'],
 		}),
 });
+
+export const eventSchema = z.object({
+	imagePath: z.string(),
+	name: z.string().max(128),
+	startDate: z.coerce.date(),
+	endDate: z.coerce.date(),
+	rewardPoints: z.number(),
+	location: z.string(),
+	status: z.string(),
+	description: z.string(),
+	creatorId: z.string(),
+	locationLat: z.number(),
+	locationLng: z.number(),
+});
+
+export type Event = z.infer<typeof eventSchema>;
+
+export const eventRequestSchema = z.object({
+	body: eventSchema,
+});
