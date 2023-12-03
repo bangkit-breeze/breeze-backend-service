@@ -21,4 +21,47 @@ const create = async (event: Event) => {
 	return newEvent;
 };
 
-export { create };
+const findById = async (id: number) => {
+	const event = await prisma.event.findUnique({
+		where: {
+			id: id,
+		},
+	});
+
+	return event;
+};
+
+const findUserEventParticipation = async (userId: string, eventId: number) => {
+	const userEventParticipation = await prisma.userParticipation.findFirst({
+		where: {
+			participant_id: userId,
+			event_id: eventId,
+		},
+	});
+
+	return userEventParticipation;
+};
+
+const findAll = async () => {
+	const events = await prisma.event.findMany({});
+
+	return events;
+};
+
+const findAllByStatus = async (status: string) => {
+	const events = await prisma.event.findMany({
+		where: {
+			status: status,
+		},
+	});
+
+	return events;
+};
+
+export {
+	create,
+	findById,
+	findUserEventParticipation,
+	findAll,
+	findAllByStatus,
+};

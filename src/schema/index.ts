@@ -40,3 +40,15 @@ export type Event = z.infer<typeof eventSchema>;
 export const eventRequestSchema = z.object({
 	body: eventSchema,
 });
+
+export const userEventParticipationEvidence = z.object({
+	description: z.string(),
+	imagePath: z.string(),
+});
+
+export const userEventParticipationEvidenceRequestSchema = z.object({
+	body: userEventParticipationEvidence,
+	params: z.object({
+		eventId: z.string(),
+	}),
+});
