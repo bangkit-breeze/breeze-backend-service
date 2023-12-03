@@ -20,7 +20,7 @@ router.post(
 			const event = await createEvent(newEvent);
 
 			res
-				.status(200)
+				.status(201)
 				.json(createSuccessResponse(event, 'Berhasil membuat event'));
 		} catch (err) {
 			res.status(400).json(createErrorResponse(err.message));
