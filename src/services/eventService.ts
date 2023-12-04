@@ -7,6 +7,7 @@ import {
 import {
 	addEventUserParticipation,
 	isUserAlreadyParticipatedEvent,
+	isUserAlreadyParticipatedFinishedEvent,
 } from '../repositories/userEventRepository';
 import { Event } from '../schema';
 
@@ -16,8 +17,19 @@ const createEvent = async (newEvent: Event) => {
 	return event;
 };
 
-const findEventById = async (id: number) => {
-	const event = await findById(id);
+const findEventById = async (userId: string, eventId: number) => {
+	const event = await findById(eventId);
+	const isParticipated = await isUserAlreadyParticipatedEvent(userId, eventId);
+	if (isParticipated) {
+		event.status = 'JOINED';
+	}
+	const isFinished = await isUserAlreadyParticipatedFinishedEvent(
+		userId,
+		eventId
+	);
+	if (isFinished) {
+		event.status = 'FINISHED';
+	}
 
 	return event;
 };

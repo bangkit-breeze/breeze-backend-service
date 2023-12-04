@@ -9,7 +9,12 @@ import {
 	userEventParticipationEvidenceRequestSchema,
 } from '../schema';
 import { z } from 'zod';
-import { createEvent, findAllEvent, joinEvent } from '../services/eventService';
+import {
+	createEvent,
+	findAllEvent,
+	findEventById,
+	joinEvent,
+} from '../services/eventService';
 import { useAuth } from '../utils/auth';
 import {
 	findUserEventByStatus,
@@ -31,6 +36,18 @@ router.get('/', async (req, res) => {
 			const { userId } = useAuth(req);
 			events = await findUserEventByStatus(userId, status as string);
 		}
+
+		res.status(200).json(createSuccessResponse(events, ''));
+	} catch (err) {
+		res.status(400).json(createErrorResponse(err.message));
+	}
+});
+
+router.get('/:id', async (req, res) => {
+	try {
+		const id = req.params.id;
+		const { userId } = useAuth(req);
+		const events = await findEventById(userId, Number(id));
 
 		res.status(200).json(createSuccessResponse(events, ''));
 	} catch (err) {
