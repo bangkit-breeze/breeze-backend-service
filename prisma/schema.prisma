@@ -11,10 +11,10 @@ model EmissionLog {
   id                 BigInt               @id(map: "emission_logs_pkey") @default(autoincrement())
   created_at         DateTime             @default(now()) @db.Timestamptz(6)
   name               String?
-  total_emission     BigInt?
+  total_emission     Int?
   category           String?
   user_id            String?              @db.Uuid
-  reward_exp         BigInt?
+  reward_exp         Int?
   User               User?                @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   TrackerCallbackLog TrackerCallbackLog[]
 }
@@ -26,7 +26,7 @@ model Event {
   name              String?
   start_at          DateTime?           @db.Timestamptz(6)
   end_at            DateTime?           @db.Timestamptz(6)
-  reward_points     BigInt?
+  reward_points     Int?
   location          String?
   status            String?
   description       String?
@@ -53,13 +53,13 @@ model User {
   email                  String
   avatar_url             String?
   role                   String?
-  points                 BigInt?             @default(0)
-  experiences            BigInt?             @default(0)
-  vehicle_emission_count BigInt?             @default(0)
-  food_emission_count    BigInt?             @default(0)
-  food_footprint_sum     BigInt?             @default(0)
-  vehicle_footprint_sum  BigInt?             @default(0)
-  total_co2_removed      BigInt?             @default(0)
+  points                 Int?             @default(0)
+  experiences            Int?             @default(0)
+  vehicle_emission_count Int?             @default(0)
+  food_emission_count    Int?             @default(0)
+  food_footprint_sum     Int?             @default(0)
+  vehicle_footprint_sum  Int?             @default(0)
+  total_co2_removed      Int?             @default(0)
   password               String
   EmissionLog            EmissionLog[]
   Event                  Event[]
