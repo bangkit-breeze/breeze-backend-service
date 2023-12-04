@@ -80,7 +80,9 @@ router.post('/:eventId/join', async (req, res) => {
 
 		await joinEvent(userId, Number(eventId));
 
-		res.status(200).json(createSuccessResponse(null, 'Event has been joined'));
+		res
+			.status(200)
+			.json(createSuccessResponse(null, 'Event successfully joined'));
 	} catch (err) {
 		res.status(400).json(createErrorResponse(err.message));
 	}
