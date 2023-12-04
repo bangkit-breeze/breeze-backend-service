@@ -9,14 +9,12 @@ import {
 	userEventParticipationEvidenceRequestSchema,
 } from '../schema';
 import { z } from 'zod';
-import {
-	createEvent,
-	findAllEvent,
-	getUserEventParticipation,
-	joinEvent,
-	uploadEvidence,
-} from '../services/eventService';
+import { createEvent, findAllEvent, joinEvent } from '../services/eventService';
 import { useAuth } from '../utils/auth';
+import {
+	getUserEventParticipation,
+	uploadEvidence,
+} from '../services/userEventService';
 
 const router = Router();
 

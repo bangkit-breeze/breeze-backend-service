@@ -3,14 +3,11 @@ import {
 	findAll,
 	findAllByStatus,
 	findById,
-	findUserEventParticipation,
 } from '../repositories/eventRepository';
 import {
 	addEventUserParticipation,
 	isUserAlreadyParticipatedEvent,
-	isUserAlreadyParticipatedFinishedEvent,
-	setEventToFinish,
-} from '../repositories/userRepository';
+} from '../repositories/userEventRepository';
 import { Event } from '../schema';
 
 const createEvent = async (newEvent: Event) => {
@@ -41,37 +38,6 @@ const joinEvent = async (userId: string, eventId: number) => {
 	return isSuccessJoin;
 };
 
-const uploadEvidence = async (
-	userEventParticipationId: number,
-	userId: string,
-	eventId: number,
-	description: string,
-	imagePath: string
-) => {
-	const isEventFinished = await isUserAlreadyParticipatedFinishedEvent(
-		userId,
-		eventId
-	);
-
-	if (isEventFinished) {
-		throw Error('Kamu telah menyelesaikan event ini');
-	}
-
-	const isSuccessJoin = await setEventToFinish(
-		userEventParticipationId,
-		userId,
-		eventId,
-		description,
-		imagePath
-	);
-
-	if (!isSuccessJoin) {
-		throw Error('Gagal bergabung ke event');
-	}
-
-	return isSuccessJoin;
-};
-
 const findAllEvent = async () => {
 	const events = await findAll();
 
@@ -84,22 +50,10 @@ const findAllEventByStatus = async (status: string) => {
 	return events;
 };
 
-const getUserEventParticipation = async (userId: string, eventId: number) => {
-	const userEventParticipation = findUserEventParticipation(userId, eventId);
-
-	if (!userEventParticipation) {
-		throw Error('Event partisipasi tidak ditemukan');
-	}
-
-	return userEventParticipation;
-};
-
 export {
 	createEvent,
 	findEventById,
 	joinEvent,
 	findAllEvent,
 	findAllEventByStatus,
-	uploadEvidence,
-	getUserEventParticipation,
 };
