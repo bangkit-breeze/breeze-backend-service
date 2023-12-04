@@ -1,5 +1,6 @@
 import { findUserEventParticipation } from '../repositories/eventRepository';
 import {
+	findByStatus,
 	isUserAlreadyParticipatedFinishedEvent,
 	setEventToFinish,
 } from '../repositories/userEventRepository';
@@ -45,4 +46,10 @@ const getUserEventParticipation = async (userId: string, eventId: number) => {
 	return userEventParticipation;
 };
 
-export { uploadEvidence, getUserEventParticipation };
+const findUserEventByStatus = async (userId: string, status: string) => {
+	const userEvents = await findByStatus(userId, status.toUpperCase());
+
+	return userEvents;
+};
+
+export { uploadEvidence, getUserEventParticipation, findUserEventByStatus };

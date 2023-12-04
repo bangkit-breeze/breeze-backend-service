@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { createEvent, findAllEvent, joinEvent } from '../services/eventService';
 import { useAuth } from '../utils/auth';
 import {
+	findUserEventByStatus,
 	getUserEventParticipation,
 	uploadEvidence,
 } from '../services/userEventService';
@@ -19,8 +20,17 @@ import {
 const router = Router();
 
 router.get('/', async (req, res) => {
+	const status = req.query.status;
+
 	try {
-		const events = await findAllEvent();
+		let events = undefined;
+
+		if (!status) {
+			events = await findAllEvent();
+		} else {
+			const { userId } = useAuth(req);
+			events = await findUserEventByStatus(userId, status as string);
+		}
 
 		res.status(200).json(createSuccessResponse(events, ''));
 	} catch (err) {
