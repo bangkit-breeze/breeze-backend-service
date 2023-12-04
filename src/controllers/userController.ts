@@ -23,23 +23,21 @@ router.get('/statistic', async (req, res) => {
 		const { userId } = useAuth(req);
 		const statistic = await getStatistic(userId);
 
-		res.status(200).json(createSuccessResponse(statistic, 'Berhasil mendapatkan statistik'));
+		res.status(200).json(createSuccessResponse(statistic, ''));
 	} catch (err) {
 		res.status(400).json(createErrorResponse(err.message));
 	}
-}
-);
+});
 
 router.get('/history', async (req, res) => {
 	try {
 		const { userId } = useAuth(req);
 		const history = await getHistory(userId);
 
-		res.status(200).json(createSuccessResponse(history, 'Berhasil mendapatkan history'));
+		res.status(200).json(createSuccessResponse(history, ''));
 	} catch (err) {
 		res.status(400).json(createErrorResponse(err.message));
 	}
-}
-);
+});
 
 export default router;
