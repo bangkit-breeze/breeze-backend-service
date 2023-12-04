@@ -88,20 +88,17 @@ router.post(
 				Number(eventId)
 			);
 
-			await uploadEvidence(
+			const point = await uploadEvidence(
 				Number(userEventParticipation.id),
 				userId,
 				Number(eventId),
 				description,
 				imagePath
 			);
-			// TODO:
-			// add points
+
 			res
 				.status(200)
-				.json(
-					createSuccessResponse(null, 'Selamat! Anda mendapatkan 9999 poin')
-				);
+				.json(createSuccessResponse(null, `Congrats! You got ${point} points`));
 		} catch (err) {
 			res.status(400).json(createErrorResponse(err.message));
 		}

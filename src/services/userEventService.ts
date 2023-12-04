@@ -1,9 +1,13 @@
-import { findUserEventParticipation } from '../repositories/eventRepository';
+import {
+	findById,
+	findUserEventParticipation,
+} from '../repositories/eventRepository';
 import {
 	findByStatus,
 	isUserAlreadyParticipatedFinishedEvent,
 	setEventToFinish,
 } from '../repositories/userEventRepository';
+import { addPoint } from '../repositories/userRepository';
 
 const uploadEvidence = async (
 	userEventParticipationId: number,
@@ -18,22 +22,25 @@ const uploadEvidence = async (
 	);
 
 	if (isEventFinished) {
-		throw Error('Kamu telah menyelesaikan event ini');
+		throw Error('You have already finished this event');
 	}
 
-	const isSuccessJoin = await setEventToFinish(
+	const isSuccessFinish = await setEventToFinish(
 		userEventParticipationId,
 		userId,
 		eventId,
 		description,
 		imagePath
 	);
+	const event = await findById(eventId);
+	const eventPoint = event.reward_points;
+	await addPoint(userId, eventPoint);
 
-	if (!isSuccessJoin) {
-		throw Error('Gagal bergabung ke event');
+	if (!isSuccessFinish) {
+		throw Error('Fail to finish event');
 	}
 
-	return isSuccessJoin;
+	return eventPoint;
 };
 
 const getUserEventParticipation = async (userId: string, eventId: number) => {

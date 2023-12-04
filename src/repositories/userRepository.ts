@@ -27,7 +27,7 @@ const findByEmail = async (email: string) => {
 };
 
 const findById = async (id: string) => {
-	const user = await prisma.user.findFirst({
+	const user = await prisma.user.findUnique({
 		where: {
 			id: id,
 		},
@@ -36,4 +36,24 @@ const findById = async (id: string) => {
 	return user;
 };
 
-export { createUser, findByEmail, findById };
+const addPoint = async (userId: string, point: number) => {
+	const user = await prisma.user.findUnique({
+		where: {
+			id: userId,
+		},
+	});
+	const prevPoint = user.points;
+
+	const updatedUser = await prisma.user.update({
+		where: {
+			id: userId,
+		},
+		data: {
+			points: prevPoint + point,
+		},
+	});
+
+	return updatedUser;
+};
+
+export { createUser, findByEmail, findById, addPoint };
