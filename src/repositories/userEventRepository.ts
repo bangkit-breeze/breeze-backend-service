@@ -79,6 +79,10 @@ const findByStatus = async (userId: string, status: string) => {
 		where: {
 			AND: [{ participant_id: userId }, { status: status }],
 		},
+		select: {
+			Event: true,
+			status: true,
+		},
 	});
 
 	return userParticipations;

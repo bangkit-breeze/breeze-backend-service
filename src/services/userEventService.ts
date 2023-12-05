@@ -56,7 +56,14 @@ const getUserEventParticipation = async (userId: string, eventId: number) => {
 const findUserEventByStatus = async (userId: string, status: string) => {
 	const userEvents = await findByStatus(userId, status.toUpperCase());
 
-	return userEvents;
+	const res = userEvents.map((item) => {
+		return {
+			...item.Event,
+			status: item.status,
+		};
+	});
+
+	return res;
 };
 
 export { uploadEvidence, getUserEventParticipation, findUserEventByStatus };
