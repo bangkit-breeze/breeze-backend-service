@@ -1,3 +1,6 @@
+import { Storage } from '@google-cloud/storage';
+import { randomUUID } from 'crypto';
+
 export const createSuccessResponse = (body: object, message: string) => {
 	return {
 		success: true,
@@ -27,3 +30,30 @@ export const validate = (schema) => (req, res, next) => {
 		res.status(400).json(createErrorResponse(err.errors));
 	}
 };
+
+export const uploadImage = (file) =>
+	new Promise((resolve, reject) => {
+		const storage = new Storage({
+			projectId: 'bangkit-breeze',
+		});
+		const bucketName = 'bangkit-breeze';
+		const bucket = storage.bucket(bucketName);
+
+		const { originalname, buffer } = file;
+		const blob = bucket.file(
+			`${randomUUID()}-${originalname.replace(/ /g, '_')}`
+		);
+		const blobStream = blob.createWriteStream({
+			resumable: false,
+		});
+		blobStream
+			.on('finish', () => {
+				const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+
+				resolve(publicUrl);
+			})
+			.on('error', () => {
+				reject('Fail to upload image');
+			})
+			.end(buffer);
+	});

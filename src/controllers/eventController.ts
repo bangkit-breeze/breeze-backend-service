@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
 	createErrorResponse,
 	createSuccessResponse,
+	uploadImage,
 	validate,
 } from '../utils/helper';
 import {
@@ -21,6 +22,7 @@ import {
 	getUserEventParticipation,
 	uploadEvidence,
 } from '../services/userEventService';
+import multer from 'multer';
 
 const router = Router();
 
@@ -88,6 +90,7 @@ router.post('/:eventId/join', async (req, res) => {
 	}
 });
 
+router.use(multer().single('file'));
 router.post(
 	'/:eventId/upload-evidence',
 	validate(userEventParticipationEvidenceRequestSchema),
@@ -98,19 +101,25 @@ router.post(
 		try {
 			const eventId = req.params.eventId;
 			const { userId } = useAuth(req);
-			const { description, imagePath } = req.body;
+			const { description } = req.body;
+
+			let imageUrl;
 
 			const userEventParticipation = await getUserEventParticipation(
 				userId,
 				Number(eventId)
 			);
 
+			if (userEventParticipation.status === 'JOINED') {
+				imageUrl = (await uploadImage(req.file)) as string;
+			}
+
 			const point = await uploadEvidence(
 				Number(userEventParticipation.id),
 				userId,
 				Number(eventId),
 				description,
-				imagePath
+				imageUrl
 			);
 
 			res

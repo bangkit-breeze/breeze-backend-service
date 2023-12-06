@@ -55,7 +55,6 @@ export const eventRequestSchema = z.object({
 
 export const userEventParticipationEvidence = z.object({
 	description: z.string(),
-	imagePath: z.string(),
 });
 
 export const userEventParticipationEvidenceRequestSchema = z.object({
@@ -63,4 +62,5 @@ export const userEventParticipationEvidenceRequestSchema = z.object({
 	params: z.object({
 		eventId: z.string(),
 	}),
+	file: z.any(),
 });
