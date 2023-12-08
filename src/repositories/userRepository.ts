@@ -116,4 +116,24 @@ const addVehicleFootprintSum = async (userId: string, footprint: number) => {
 	return updatedUser;
 }
 
-export { createUser, findByEmail, findById, addPoint, addExp, addVehicleEmissionCount, addVehicleFootprintSum};
+const addTotalCo2Removed = async (userId: string, co2Removed: number) => {
+	const user = await prisma.user.findUnique({
+		where: {
+			id: userId,
+		},
+	});
+	const prevCo2Removed = user.total_co2_removed;
+
+	const updatedUser = await prisma.user.update({
+		where: {
+			id: userId,
+		},
+		data: {
+			total_co2_removed: prevCo2Removed + co2Removed,
+		},
+	});
+
+	return updatedUser;
+}
+
+export { createUser, findByEmail, findById, addPoint, addExp, addVehicleEmissionCount, addVehicleFootprintSum, addTotalCo2Removed};

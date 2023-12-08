@@ -1,5 +1,5 @@
 import { createEmissionLog } from '../repositories/emissionLogRepository';
-import { addExp } from '../repositories/userRepository';
+import { addExp, addTotalCo2Removed } from '../repositories/userRepository';
 import { addVehicleEmissionCount, addVehicleFootprintSum } from '../repositories/userRepository';
 
 const emissionLog = async (userId, vehicleType, distance) => {
@@ -44,6 +44,10 @@ const emissionLog = async (userId, vehicleType, distance) => {
     const isSuccessUpdateUserVehicleFootprintSum = await addVehicleFootprintSum(userId, totalEmission);
     if (!isSuccessUpdateUserVehicleFootprintSum) {
       throw new Error('Failed to update user vehicle footprint sum');
+    }
+    const isSuccessUpdateTotalC02 = await addTotalCo2Removed(userId, totalEmission);
+    if (!isSuccessUpdateTotalC02) {
+      throw new Error('Failed to update total C02');
     }
     return isSuccessLogging;
   } catch (err) {
