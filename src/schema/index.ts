@@ -64,3 +64,10 @@ export const userEventParticipationEvidenceRequestSchema = z.object({
 	}),
 	file: z.any(),
 });
+
+export const trackingVehicleSchema = z.object({
+	body: z.object({
+		vehicleType: z.string(),
+		distance: z.number(),
+	}),
+});
