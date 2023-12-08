@@ -10,7 +10,7 @@ router.get('/:range', async (req, res) => {
     
     const range = req.params.range;
     const { userId } = useAuth(req);
-    const leaderboard = await getLeaderboard(range);
+    const leaderboard = await getLeaderboard(range, userId);
     
     res.status(200).json(createSuccessResponse(leaderboard, ''));
   } catch (err) {

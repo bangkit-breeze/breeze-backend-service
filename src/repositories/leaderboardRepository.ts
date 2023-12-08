@@ -17,11 +17,11 @@ const findLeaderboard = async (range: string) => {
         }
       },
       _sum: {
-        total_emission: true 
+        reward_exp: true 
       },
       orderBy: [{
         _sum: {
-          total_emission: 'desc' 
+          reward_exp: 'desc' 
         }
       }]
     });
@@ -39,11 +39,12 @@ const findLeaderboard = async (range: string) => {
     });
 
     // Combine the results
-    const leaderboard = aggregatedData.map(item => {
+    const leaderboard = aggregatedData.map((item, index) => {
       const user = users.find(u => u.id === item.user_id);
       return {
+        rank: index + 1,
         user_id: item.user_id,
-        points: item._sum.total_emission,
+        exp: item._sum.reward_exp,
         full_name: user ? user.full_name : 'Unknown'
       };
     });
@@ -54,11 +55,11 @@ const findLeaderboard = async (range: string) => {
     const aggregatedData = await prisma.emissionLog.groupBy({
       by: ['user_id'],
       _sum: {
-        total_emission: true 
+        reward_exp: true 
       },
       orderBy: [{
         _sum: {
-          total_emission: 'desc' 
+          reward_exp: 'desc' 
         }
       }]
     });
@@ -76,11 +77,12 @@ const findLeaderboard = async (range: string) => {
     });
 
     // Combine the results
-    const leaderboard = aggregatedData.map(item => {
+    const leaderboard = aggregatedData.map((item, index) => {
       const user = users.find(u => u.id === item.user_id);
       return {
+        rank: index + 1,
         user_id: item.user_id,
-        points: item._sum.total_emission,
+        points: item._sum.reward_exp,
         full_name: user ? user.full_name : 'Unknown'
       };
     });
