@@ -38,13 +38,13 @@ const joinEvent = async (userId: string, eventId: number) => {
 	const isAlreadyJoin = await isUserAlreadyParticipatedEvent(userId, eventId);
 
 	if (isAlreadyJoin) {
-		throw Error('You have been joined this event');
+		throw new Error('You have been joined this event');
 	}
 
 	const isSuccessJoin = await addEventUserParticipation(userId, eventId);
 
 	if (!isSuccessJoin) {
-		throw Error('Gagal bergabung ke event');
+		throw new Error('Gagal bergabung ke event');
 	}
 
 	return isSuccessJoin;

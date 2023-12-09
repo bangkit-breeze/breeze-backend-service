@@ -22,7 +22,7 @@ const uploadEvidence = async (
 	);
 
 	if (isEventFinished) {
-		throw Error('You have already finished this event');
+		throw new Error('You have already finished this event');
 	}
 
 	const isSuccessFinish = await setEventToFinish(
@@ -37,7 +37,7 @@ const uploadEvidence = async (
 	await addPoint(userId, eventPoint);
 
 	if (!isSuccessFinish) {
-		throw Error('Fail to finish event');
+		throw new Error('Fail to finish event');
 	}
 
 	return eventPoint;
@@ -47,7 +47,7 @@ const getUserEventParticipation = async (userId: string, eventId: number) => {
 	const userEventParticipation = findUserEventParticipation(userId, eventId);
 
 	if (!userEventParticipation) {
-		throw Error('Event partisipasi tidak ditemukan');
+		throw new Error('Event partisipasi tidak ditemukan');
 	}
 
 	return userEventParticipation;

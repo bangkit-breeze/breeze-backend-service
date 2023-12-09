@@ -4,11 +4,11 @@ const profile = async (id: string) => {
 	const user = await findById(id);
 
 	if (!user) {
-		throw Error('User tidak ditemukan');
+		throw new Error('User tidak ditemukan');
 	}
 
 	const { password: _password, ...userProfile } = user;
-	
+
 	return userProfile;
 };
 

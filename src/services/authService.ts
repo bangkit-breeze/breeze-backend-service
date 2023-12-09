@@ -6,7 +6,7 @@ const register = async (fullName: string, email: string, password: string) => {
 	const isExistUser = await findByEmail(email);
 
 	if (isExistUser) {
-		throw Error('Email sudah digunakan');
+		throw new Error('Email sudah digunakan');
 	}
 
 	const saltRounds = process.env.SALT_ROUNDS;
@@ -26,7 +26,7 @@ const login = async (email: string, password: string) => {
 		user === null ? false : await compare(password, user.password);
 
 	if (!(user && isPasswordCorrect)) {
-		throw Error('Email atau password salah');
+		throw new Error('Email atau password salah');
 	}
 
 	const userTokenBody = {
