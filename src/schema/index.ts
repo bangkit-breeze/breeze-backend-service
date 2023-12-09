@@ -71,3 +71,14 @@ export const trackingVehicleSchema = z.object({
 		distance: z.number(),
 	}),
 });
+
+export const trackingFoodPredictRequestSchema = z.object({
+	file: z.any(),
+});
+
+export const trackingFoodAddRequestSchema = z.object({
+	body: z.object({
+		foodName: z.string(),
+		totalEmission: z.number(),
+	}),
+});

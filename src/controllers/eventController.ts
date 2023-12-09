@@ -111,7 +111,7 @@ router.post(
 			);
 
 			if (userEventParticipation.status === 'JOINED') {
-				imageUrl = (await uploadImage(req.file)) as string;
+				imageUrl = (await uploadImage(req.file, 'evidence')) as string;
 			}
 
 			const point = await uploadEvidence(

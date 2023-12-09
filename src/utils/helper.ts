@@ -31,9 +31,10 @@ export const validate = (schema) => (req, res, next) => {
 	}
 };
 
-export const uploadImage = (file) =>
+export const uploadImage = (file, folder: string) =>
 	new Promise((resolve, reject) => {
 		const storage = new Storage({
+			keyFilename: 'key.json',
 			projectId: 'bangkit-breeze',
 		});
 		const bucketName = 'bangkit-breeze';
@@ -41,7 +42,7 @@ export const uploadImage = (file) =>
 
 		const { originalname, buffer } = file;
 		const blob = bucket.file(
-			`${randomUUID()}-${originalname.replace(/ /g, '_')}`
+			`${folder}/${randomUUID()}-${originalname.replace(/ /g, '_')}`
 		);
 		const blobStream = blob.createWriteStream({
 			resumable: false,
@@ -49,7 +50,6 @@ export const uploadImage = (file) =>
 		blobStream
 			.on('finish', () => {
 				const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-
 				resolve(publicUrl);
 			})
 			.on('error', () => {
