@@ -8,7 +8,8 @@
     "lint": "eslint --ext .ts .",
     "start:prod": "node build/index.js",
     "start:migrate:prod": "prisma migrate deploy && yarn run start:prod",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "migrate": "npx prisma migrate dev"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
