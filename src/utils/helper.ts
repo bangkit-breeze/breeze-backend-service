@@ -34,7 +34,6 @@ export const validate = (schema) => (req, res, next) => {
 export const uploadImage = (file, folder: string) =>
 	new Promise((resolve, reject) => {
 		const storage = new Storage({
-			keyFilename: 'key.json',
 			projectId: 'bangkit-breeze',
 		});
 		const bucketName = 'bangkit-breeze';
