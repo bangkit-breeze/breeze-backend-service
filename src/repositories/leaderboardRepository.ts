@@ -34,7 +34,8 @@ const findLeaderboard = async (range: string) => {
       },
       select: {
         id: true,
-        full_name: true
+        full_name: true,
+        avatar_url: true
       }
     });
 
@@ -45,7 +46,8 @@ const findLeaderboard = async (range: string) => {
         rank: index + 1,
         user_id: item.user_id,
         exp: item._sum.reward_exp,
-        full_name: user ? user.full_name : 'Unknown'
+        full_name: user ? user.full_name : 'Unknown',
+        avatar_url: user ? user.avatar_url : ''
       };
     });
 
@@ -72,7 +74,8 @@ const findLeaderboard = async (range: string) => {
       },
       select: {
         id: true,
-        full_name: true
+        full_name: true,
+        avatar_url: true
       }
     });
 
@@ -82,8 +85,9 @@ const findLeaderboard = async (range: string) => {
       return {
         rank: index + 1,
         user_id: item.user_id,
-        points: item._sum.reward_exp,
-        full_name: user ? user.full_name : 'Unknown'
+        exp: item._sum.reward_exp,
+        full_name: user ? user.full_name : 'Unknown',
+        avatar_url: user ? user.avatar_url : ''
       };
     });
 
