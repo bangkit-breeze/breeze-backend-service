@@ -1,7 +1,7 @@
 import { findById } from '../repositories/userRepository';
 
 const profile = async (id: string) => {
-	const user = await findById(id);
+	const { user, totalEvent } = await findById(id);
 
 	if (!user) {
 		throw new Error('User tidak ditemukan');
@@ -9,7 +9,7 @@ const profile = async (id: string) => {
 
 	const { password: _password, ...userProfile } = user;
 
-	return userProfile;
+	return { ...userProfile, total_event: totalEvent._count };
 };
 
 export { profile };

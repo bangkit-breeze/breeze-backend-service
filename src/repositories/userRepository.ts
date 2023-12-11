@@ -32,8 +32,14 @@ const findById = async (id: string) => {
 			id: id,
 		},
 	});
+	const totalEvent = await prisma.userParticipation.aggregate({
+		where: {
+			participant_id: id,
+		},
+		_count: true,
+	});
 
-	return user;
+	return { user, totalEvent };
 };
 
 const addPoint = async (userId: string, point: number) => {
