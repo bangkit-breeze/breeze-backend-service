@@ -61,11 +61,25 @@ router.post(
 				},
 			});
 
+			const confidence = predictRequest.data.confidence;
+			const foodName = predictRequest.data.food_name;
+			const ingredients = predictRequest.data.ingredients;
+
+			if (Number(confidence) < 0.6 && ingredients.length === 0) {
+				return res.status(400).json(createErrorResponse('Fail to predict'));
+			}
+
 			res
 				.status(200)
 				.json(
 					createSuccessResponse(
-						{ image_url: imageUrl, predict_result: predictRequest.data },
+						{
+							image_url: imageUrl,
+							predict_result: {
+								...predictRequest.data,
+								food_name: Number(confidence) < 0.6 ? 'unknown' : foodName,
+							},
+						},
 						''
 					)
 				);
