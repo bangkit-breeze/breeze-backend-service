@@ -12,8 +12,9 @@ import {
 import { z } from 'zod';
 import {
 	createEvent,
-	findAllEvent,
+	findAllAvailableEvent,
 	findEventById,
+	findPopularEvents,
 	joinEvent,
 } from '../services/eventService';
 import { useAuth } from '../utils/auth';
@@ -26,14 +27,25 @@ import multer from 'multer';
 
 const router = Router();
 
+router.get('/popular', async (req, res) => {
+	try {
+		const events = await findPopularEvents();
+
+		res.status(200).json(createSuccessResponse(events, ''));
+	} catch (err) {
+		res.status(400).json(createErrorResponse(err.message));
+	}
+});
+
 router.get('/', async (req, res) => {
 	const status = req.query.status;
+	const { userId } = useAuth(req);
 
 	try {
 		let events = undefined;
 
 		if (!status) {
-			events = await findAllEvent();
+			events = await findAllAvailableEvent(userId);
 		} else {
 			const { userId } = useAuth(req);
 			events = await findUserEventByStatus(userId, status as string);

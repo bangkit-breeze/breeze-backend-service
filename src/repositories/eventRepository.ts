@@ -42,8 +42,17 @@ const findUserEventParticipation = async (userId: string, eventId: number) => {
 	return userEventParticipation;
 };
 
-const findAll = async () => {
-	const events = await prisma.event.findMany({});
+const findAllAvailable = async (userId: string) => {
+	// user not joined/finished
+	const events = await prisma.event.findMany({
+		where: {
+			UserParticipation: {
+				none: {
+					participant_id: userId,
+				},
+			},
+		},
+	});
 
 	return events;
 };
@@ -58,10 +67,23 @@ const findAllByStatus = async (status: string) => {
 	return events;
 };
 
+const findPopular = async () => {
+	const events = await prisma.event.findMany({
+		take: 5,
+		orderBy: {
+			UserParticipation: {
+				_count: 'desc',
+			},
+		},
+	});
+	return events;
+};
+
 export {
 	create,
 	findById,
 	findUserEventParticipation,
-	findAll,
+	findAllAvailable,
 	findAllByStatus,
+	findPopular,
 };

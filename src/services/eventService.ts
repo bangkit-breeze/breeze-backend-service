@@ -1,8 +1,9 @@
 import {
 	create,
-	findAll,
+	findAllAvailable,
 	findAllByStatus,
 	findById,
+	findPopular,
 } from '../repositories/eventRepository';
 import {
 	addEventUserParticipation,
@@ -50,8 +51,8 @@ const joinEvent = async (userId: string, eventId: number) => {
 	return isSuccessJoin;
 };
 
-const findAllEvent = async () => {
-	const events = await findAll();
+const findAllAvailableEvent = async (userId: string) => {
+	const events = await findAllAvailable(userId);
 
 	return events;
 };
@@ -62,10 +63,17 @@ const findAllEventByStatus = async (status: string) => {
 	return events;
 };
 
+const findPopularEvents = async () => {
+	const events = await findPopular();
+
+	return events;
+};
+
 export {
 	createEvent,
 	findEventById,
 	joinEvent,
-	findAllEvent,
+	findAllAvailableEvent,
 	findAllEventByStatus,
+	findPopularEvents,
 };
