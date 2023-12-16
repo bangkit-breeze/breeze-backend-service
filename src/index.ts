@@ -8,6 +8,7 @@ import { authGuard } from './middlewares/auth';
 import eventController from './controllers/eventController';
 import leaderboardController from './controllers/leaderboardController';
 import emissionLogController from './controllers/emissionLogController';
+import projectController from './controllers/projectController';
 
 // @ts-expect-error: Unreachable code error
 BigInt.prototype.toJSON = function () {
@@ -30,6 +31,7 @@ app.use('/api/v1/articles', articleController);
 app.use('/api/v1/events', eventController);
 app.use('/api/v1/leaderboard', leaderboardController);
 app.use('/api/v1/emission', emissionLogController);
+app.use('/api/v1/projects', projectController);
 
 app.get('/api/v1/ping', (_req, res) => {
 	console.log('someone pinged here');
